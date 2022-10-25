@@ -1,53 +1,59 @@
 import nodemailer from "nodemailer";
-import configMail from "../../config/mailConfig";
 import config from "config";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 class MailSevice {
+  // mode: string = config.get<string>("env" || "development");
 
-  mode: string = config.get<string>("env" || "development");
+  mailConfig: any = {
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    auth: {
+      user: "ethereal.user@ethereal.email",
+      pass: "verysecret",
+    },
+  };
 
-  mailConfig: any = "";
+  constructor() {}
 
-  constructor() {
+  // checkMode() {
+  //   if (this.mode === "production") {
+  //     this.mailConfig = {
+  //       host: process.env.MAIL_HOST,
+  //       port: process.env.MAIL_PORT,
+  //       auth: {
+  //         user: process.env.MAIL_USER,
+  //         pass: process.env.MAIL_PASSWORD,
+  //       },
+  //     };
+  //   } else {
+  //     this.mailConfig = {
+  //       host: process.env.MAIL_HOST,
+  //       port: process.env.MAIL_PORT,
+  //       auth: {
+  //         user: "ethereal.user@ethereal.email",
+  //         pass: "verysecret",
+  //       },
+  //     };
+  //   }
+  // }
 
-  }
+  sendMail(mail: object) {
+    // this.checkMode();
 
-  checkMode() {
-    if (this.mode === "production") {
-      this.mailConfig = {
-        host: process.env.MAIL_HOST,
-        port: process.env.MAIL_PORT,
-        auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASSWORD,
-        },
-      };
-    } else {
-      this.mailConfig = {
-        host: process.env.MAIL_HOST,
-        port: process.env.MAIL_PORT,
-        auth: {
-          user: "ethereal.user@ethereal.email",
-          pass: "verysecret",
-        },
-      };
-    }
-  }
-
-  sendMail(from: string, to: string, subject: string, message: string) {
-
-    this.checkMode();
-
-    let mailOption = {
-      from: from,
-      to: to,
-      subject: subject,
-      html: message,
-    };
+    let mailOption = mail;
 
     let transporter = nodemailer.createTransport(this.mailConfig);
+    console.log(this.mailConfig);
+
+    transporter.verify(function (error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
 
     transporter.sendMail(mailOption, (error, info) => {
       if (error) {
@@ -59,4 +65,4 @@ class MailSevice {
   }
 }
 
-export default new MailSevice
+export default new MailSevice();
