@@ -2,11 +2,16 @@ import { Request, Response } from "express";
 import mailService from "../services/mailService";
 
 class MailController {
-  sendMail(req: Request, res: Response) {
+  async sendMail(req: Request, res: Response) {
     const mail: object = Object.assign({}, req.body);
-    let result = mailService.sendMail(mail);
-    console.log(result);
-    res.status(200).json({ msg: "Rota envio email" });
+    await mailService
+      .sendMail(mail)
+      .then(() => {
+        res.status(200).json({ msg: "Enviado com sucesso" });
+      })
+      .catch((error) => {
+        res.status(400).json({ msg: error.response });
+      });
   }
 }
 
