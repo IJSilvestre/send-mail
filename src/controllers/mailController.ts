@@ -3,8 +3,9 @@ import mailService from "../services/mailService";
 
 class MailController {
   sendMail(req: Request, res: Response) {
-    const mail: any = Object.assign({}, req.body);
-    mailService.sendMail(mail);
+    const mail: object = Object.assign({}, req.body);
+    let result = mailService.sendMail(mail);
+    console.log(result);
     res.status(200).json({ msg: "Rota envio email" });
   }
 }

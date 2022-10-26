@@ -7,11 +7,12 @@ class MailSevice {
   // mode: string = config.get<string>("env" || "development");
 
   mailConfig: any = {
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
+    host: "smtp.kinghost.net",
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
     auth: {
-      user: "ethereal.user@ethereal.email",
-      pass: "verysecret",
+      user: "contato@bananaspantanal.com.br",
+      pass: "P@nt@n@1",
     },
   };
 
@@ -45,15 +46,14 @@ class MailSevice {
     let mailOption = mail;
 
     let transporter = nodemailer.createTransport(this.mailConfig);
-    console.log(this.mailConfig);
 
-    transporter.verify(function (error, success) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Server is ready to take our messages");
-      }
-    });
+    // transporter.verify(function (error, success) {
+    //   if (error) {
+    //     console.log(error);
+    //   } else {
+    //     console.log("Server is ready to take our messages");
+    //   }
+    // });
 
     transporter.sendMail(mailOption, (error, info) => {
       if (error) {
