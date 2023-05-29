@@ -26,11 +26,11 @@ const level = () => {
 winston.addColors(colors);
 
 const format = winston.format.combine(
-     winston.format.timestamp({ format: "YYYY-MM-DD HH:MM:SS:MS" }),
-     winston.format.colorize({ all: true }),
-     winston.format.printf(
-          (info) => `${info.timestamp} - ${info.level}: ${info.message}`
-     )
+  winston.format.timestamp({ format: "MM-DD-YYYY HH:MM:SS:MS" }),
+  winston.format.colorize({ all: true }),
+  winston.format.printf(
+    (info) => `${info.timestamp} - ${info.level}: ${info.message}`
+  )
 );
 
 const transports = [
